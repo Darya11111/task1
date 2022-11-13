@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WpfApp1
 {
@@ -24,7 +25,12 @@ namespace WpfApp1
                 bool IsLower = false;
                 //переменная для проверки спецсимволов
                 bool IsSpec = false;
+                //переменная на проверку подряд идущих символов
+                bool IsSorted = true;
+                char t = password[0];
                 //цикл по всем символам пароля
+
+                
                 foreach (var item in password)
                 {
                     //проверяем пароль на цифры
@@ -47,6 +53,15 @@ namespace WpfApp1
                     {
                         IsSpec = true;
                     }
+                    //проверяем пароль на идущие подряд повторяющиеся символы
+                    for(int i=1;i< password.Length; i++)
+                    {
+                        if (password[i] == password[i-1])
+                        {
+                            IsSorted=false;
+                        }
+                    }
+                    
                 }
                 //Проверяем переменную если истина то цифры есть
                 if (!IsDigit)
@@ -68,14 +83,25 @@ namespace WpfApp1
                 {
                     return "Пароль должен содержать спецсимволы!";
                 }
+                if (!IsSorted)
+                {
+                    return "В пароле есть подряд идущие повторяющиеся символы!";
+                }
                 //возвращает (выходит) из метода с сообщением в квадратных ковычках
-                return "Пароль отличный!";
+                return "Пароль отличный!";                
+                
             }
             //если длина пароля меньше 7 или больше 10 то вернем сообщение об ошибке
-            else
+            else if (password.Length >= 10)
             {
-                return "Неверная длина пароля!";
+                return "Пароль длинный!";
             }
+            else 
+                     
+            {
+                return "Пароль короткий !";
+            }
+
         }
     }
 }
